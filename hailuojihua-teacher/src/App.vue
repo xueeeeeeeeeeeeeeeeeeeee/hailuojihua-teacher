@@ -1,46 +1,30 @@
-<script setup>
-import { ref } from 'vue';
-import Menuleft from "./components/Menuleft.vue"
-import Header from "./components/Header.vue"
-import { RouterLink, RouterView } from "vue-router";
-const collapsed = ref(false);
+<script setup lang="ts">
+import HelloWorld from './components/HelloWorld.vue'
 </script>
-<template>
-  <a-layout style="min-height: 100vh">
-    <a-layout-sider v-model:collapsed="collapsed" collapsible style="position: sticky; top: 0px; height: 100vh;">
-      <Menuleft></Menuleft>
-    </a-layout-sider>
-    <a-layout>
-      <a-layout-header style="background: #fff; padding: 0; position: sticky; top: 0px;">
-        <Header></Header>
-      </a-layout-header>
-      <a-layout-content style="margin: 0 16px">
-        <a-breadcrumb style="margin: 16px 0">
 
-        </a-breadcrumb>
-        <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-          <RouterView />
-        </div>
-      </a-layout-content>
-      <a-layout-footer style="text-align: center">
-        Ant Design ©2018 Created by Ant UED
-      </a-layout-footer>
-    </a-layout>
-  </a-layout>
+<template>
+  <div>
+    <a href="https://vitejs.dev" target="_blank">
+      <img src="/vite.svg" class="logo" alt="Vite logo" />
+    </a>
+    <a href="https://vuejs.org/" target="_blank">
+      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
+    </a>
+  </div>
+  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-#components-layout-demo-side .logo {
-  height: 32px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 0.3);
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
 }
-
-.site-layout .site-layout-background {
-  background: #fff;
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
 }
-
-[data-theme='dark'] .site-layout .site-layout-background {
-  background: #141414;
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
 }
 </style>
