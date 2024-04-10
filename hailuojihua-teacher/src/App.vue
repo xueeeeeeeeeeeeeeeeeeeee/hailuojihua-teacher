@@ -1,30 +1,40 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import {  RouterView } from 'vue-router'
+import dayjs from 'dayjs';
+import "dayjs/locale/zh-cn";
+import locale from "ant-design-vue/es/locale/zh_CN";
+dayjs.locale("zh-cn");
+
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div>
-  <HelloWorld msg="Vite + Vue" />
+  <a-config-provider :locale="locale">
+    <div class="divheader">
+      <!-- <Header></Header> -->
+    </div>
+    <div class="body">
+      <RouterView />
+
+    </div>
+  </a-config-provider>
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+#app {
+  width: 100%;
+  height: 100%;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+.divheader {
+  width: 100%;
+  height: 6vh;
+  position: sticky;
+  top: 0px;
+  z-index: 999;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+.body {
+  height: 94vh;
+  min-width: 100%;
 }
 </style>
