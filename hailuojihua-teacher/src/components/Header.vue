@@ -5,7 +5,7 @@
 <template>
   <div class="Header">
     <div class="Header-left">
-      ipolicy
+      hailuojihua
     </div>
     <div class="Header-right">
 <img src="../assets/dog.jpg" alt="">
