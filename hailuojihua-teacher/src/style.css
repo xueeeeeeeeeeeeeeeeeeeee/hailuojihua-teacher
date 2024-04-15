@@ -57,13 +57,18 @@ button:focus-visible {
 .card {
   padding: 2em;
 }
-
+html{
+ min-width: 100vw;
+  min-height: 100vh;
+  /* position: fixed;
+  top: 0px; */
+}
 #app {
 width: 100%;
 height: 100%;
-  margin: 0 auto;
+  /* margin: 0 auto;
 ;
-  text-align: center;
+  text-align: center; */
 }
 
 @media (prefers-color-scheme: light) {

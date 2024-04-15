@@ -4,17 +4,15 @@
         <hailuo></hailuo>
     </a-drawer>
     <div>
-        xxxx
+      xxxxxx
     </div>
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue';
 import hailuo from '../components/hailuo.vue'
 
+
+
 const visible = ref<boolean>(true);
-
-
-
-
 
 </script>

@@ -1,5 +1,4 @@
 <template>
-
     <a-table :columns="columns" :data-source="data" @change="onChange" :pagination="{ pageSize: 10 }">
     </a-table>
 </template>
