@@ -7,7 +7,6 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ABadge: typeof import('ant-design-vue/es')['Badge']
     ABreadcrumb: typeof import('ant-design-vue/es')['Breadcrumb']
     AButton: typeof import('ant-design-vue/es')['Button']
     ACard: typeof import('ant-design-vue/es')['Card']
@@ -28,14 +27,9 @@ declare module 'vue' {
     AMenu: typeof import('ant-design-vue/es')['Menu']
     AMenuItem: typeof import('ant-design-vue/es')['MenuItem']
     AModal: typeof import('ant-design-vue/es')['Modal']
-    ASwitch: typeof import('ant-design-vue/es')['Switch']
     ATable: typeof import('ant-design-vue/es')['Table']
-    ATableSummary: typeof import('ant-design-vue/es')['TableSummary']
-    ATableSummaryCell: typeof import('ant-design-vue/es')['TableSummaryCell']
-    ATableSummaryRow: typeof import('ant-design-vue/es')['TableSummaryRow']
     AUpload: typeof import('ant-design-vue/es')['Upload']
     Chat: typeof import('./src/components/chat.vue')['default']
-    copy: typeof import('./src/components/gameDetail copy.vue')['default']
     DangerWordsDetail: typeof import('./src/components/dangerWordsDetail.vue')['default']
     GameDetail: typeof import('./src/components/gameDetail.vue')['default']
     Hailuo: typeof import('./src/components/hailuo.vue')['default']

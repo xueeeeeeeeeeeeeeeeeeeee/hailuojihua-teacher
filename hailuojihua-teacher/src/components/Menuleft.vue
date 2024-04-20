@@ -28,9 +28,9 @@ watch(selectedKeys, (newVal, oldVal) => {
     if (newVal[0] === '1') {
         router.push('/');
     } else if (newVal[0] === '2') {
-        // router.push('/user');
+        router.push('/student');
     } else if (newVal[0] === '3') {
-        // router.push('/allpolicy');
+        router.push('/dangerouswords');
     } 
 
 });

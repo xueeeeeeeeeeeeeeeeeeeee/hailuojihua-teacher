@@ -1,8 +1,8 @@
 <template>
-    <a-drawer title="该学生海螺" placement="right" :closable="false" v-model:open="visible"
+    <!-- <a-drawer title="该学生海螺" placement="right" :closable="false" v-model:open="visible"
         width="50%">
         <hailuo></hailuo>
-    </a-drawer>
+    </a-drawer> -->
     <div>
       xxxxxx
     </div>
