@@ -5,9 +5,12 @@ import App from './App.vue'
 import 'ant-design-vue/dist/reset.css';
 import Antd from 'ant-design-vue';
 import axios from 'axios';
-axios.defaults.baseURL = 'xxxxxx'
+import { createPinia } from 'pinia'
+axios.defaults.baseURL = 'http://124.220.40.115:82'
 
 const app = createApp(App)
+const pinia = createPinia()
+app.use(pinia)
 app.use(Antd);
 app.config.globalProperties.$http = axios
 

@@ -18,37 +18,46 @@ const router = createRouter({
             {
                 path: '',
                 name: 'home',
-                component: HomeView
-            },{
+                component: HomeView,
+                meta: {
+                    requiresAuth: true
+                }
+            }, {
                 path: '/student',
                 name: 'student',
-                component: StudentManageView
-            },{
+                component: StudentManageView,
+                meta: {
+                    requiresAuth: true
+                }
+            }, {
                 path: '/dangerouswords',
                 name: 'dangerouswords',
-                component: DangerousWordsWarningView
+                component: DangerousWordsWarningView, 
+                meta: {
+                    requiresAuth: true
+                }
             }
         ]
     }, {
         path: '/login',
         name: 'login',
         component: loginView,
-        meta: {
-            requiresAuth: true
-        }
+        // meta: {
+        //     requiresAuth: true
+        // }
     }
 
     ]
 })
 
 
-//   router.beforeEach((to, from, next) => {
-//     const isAuthenticated = sessionStorage.getItem('token')
-//     if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
-//       next('/login')
-//     } else {
-//       next()
-//     }
-//   })
+router.beforeEach((to, from, next) => {
+    const isAuthenticated = localStorage.getItem('token')
+    if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
+        next('/login')
+    } else {
+        next()
+    }
+})
 
 export default router

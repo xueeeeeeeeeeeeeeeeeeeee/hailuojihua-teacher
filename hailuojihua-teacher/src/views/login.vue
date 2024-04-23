@@ -16,6 +16,7 @@
     </div>
 </template>
 <script lang="ts" setup>
+import api from '../api/create'
 import { ref } from 'vue'
 interface LoginForm {
     userid: string;
@@ -27,8 +28,18 @@ const loginForm = ref<LoginForm>({
     password: '',
 
 });
-const handleLogin:any=()=>{
-
+const handleLogin: any = () => {
+    api.login({
+        "username": "杭师大毛老师",
+        "password": "123456"
+    }).then((res) => {
+        console.log(res);
+        
+     })
+     api.readOne(1).then((res) => {
+        console.log(res);
+        
+     });
 }
 
 const rules: any = {
