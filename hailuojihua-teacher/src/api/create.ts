@@ -10,7 +10,9 @@ const axiosInstance: AxiosInstance = axios.create({
 // 请求拦截器
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    console.log(token);
+    
     if (token) {
       config.headers = config.headers || {};
       config.headers.Authorization =token;
@@ -24,12 +26,10 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response:any) => {
-
-    
-if(response.data.code===201){
-    router.push('/login');
-}
-    return response.data;
+    if(response.data.code===201){
+        router.push('/login');
+    }
+        return response.data;
   },
   (error: AxiosError) => {
     return Promise.reject(error);

@@ -34,12 +34,9 @@ const handleLogin: any = () => {
         "password": "123456"
     }).then((res) => {
         console.log(res);
-        
+        localStorage.setItem("token",res.data.token)
      })
-     api.readOne(1).then((res) => {
-        console.log(res);
-        
-     });
+
 }
 
 const rules: any = {

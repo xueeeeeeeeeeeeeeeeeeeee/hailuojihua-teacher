@@ -72,9 +72,7 @@ type Key = string | number;
 type TableDataType = {
   key: string;
   id: string;
-  name: string;
-  age: number;
-  address: string;
+  class: string;
 };
 
 let chatVisible = ref<Boolean>(false);
@@ -87,18 +85,19 @@ function changeGameVisible() {
   gameVisible.value = true;
 }
 
-const columns: TableColumnType<TableDataType>[] = [{
-  title: '学号',
-  dataIndex: 'id',
-  sorter: (a: TableDataType, b: TableDataType) => a.name.length - b.name.length,
-  sortDirections: ['descend', 'ascend'],
-},
+const columns: TableColumnType<TableDataType>[] = [
 {
   title: '姓名',
   dataIndex: 'name',
   filters: [{
     text: 'Joe',
     value: 'Joe',
+  },
+  {
+    title: '班级',
+    dataIndex: 'class',
+    sorter: (a: TableDataType, b: TableDataType) => a.class.length - b.class.length,
+    sortDirections: ['descend', 'ascend'],
   },
   {
     text: 'Jim',
@@ -254,15 +253,14 @@ const headers = {
 
 const beforeUpload: UploadProps['beforeUpload'] = async (file: any) => {
   console.log(file);
-  const header = ['id', 'name', 'age'];
+  const header = ['username', 'password', 'name',"className","schoolId"];
   try {
     const excel = new Excel(file);
     // 导入文件获取数据
     const res = await excel.importExcel({
       header
     });
-    data.value = res;
-    console.log(data.value);
+    console.log(res);
   } catch (err) {
     console.log(err);
   }
