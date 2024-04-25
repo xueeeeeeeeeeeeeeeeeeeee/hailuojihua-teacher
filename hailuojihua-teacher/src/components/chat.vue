@@ -5,30 +5,36 @@
 <script lang="ts" setup>
 
 import type { TableColumnType, TableProps } from 'ant-design-vue';
-import { ref } from 'vue';
-const visible = ref<boolean>(true);
-
-
+import { ref, onMounted } from 'vue';
+import API from '../api/create'
+const props = defineProps<{
+    hailuoid: number; // 声明 props 的类型
+}>();
+onMounted(() => {
+    console.log(props.hailuoid);
+    API.readOnehailuo(props.hailuoid)
+        .then((res) => {
+            console.log(res.data.chatLog);
+            // data.value=res.data.chatLog
+            data.value = res.data.chatLog.map((item: any, index: number) => {
+                return {
+                    ...item, // 将原来的属性保留
+                    key: index + 1 // 添加递增的键值，从 1 开始
+                };
+            });
+        })
+})
 type TableDataType = {
-    key: string;
-    id: string;
-    people_id: number;
+    key: number;
+    identity: string;
     content: string;
-    time: string
+    sendTime: string
 };
 
 const columns: TableColumnType<TableDataType>[] = [
     {
-        title: '聊天信息号',
-        dataIndex: 'id',
-
-        sorter: (a: TableDataType, b: TableDataType) => a.id.localeCompare(b.id)
-
-
-    },
-    {
         title: '发送人',
-        dataIndex: 'people_id',
+        dataIndex: 'identity',
         defaultSortOrder: 'descend',
 
     },
@@ -40,50 +46,25 @@ const columns: TableColumnType<TableDataType>[] = [
 
     {
         title: '发送时间',
-        dataIndex: 'time',
+        dataIndex: 'sendTime',
 
         sorter: (a: TableDataType, b: TableDataType) => a.time.localeCompare(b.time)
 
     },
 ];
 
-const data: TableDataType[] = [
+const data = ref<TableDataType[]>([
     {
-        key: '1',
-        id: '3',
-        people_id: 32,
-        content: 'New York No. 1 Lake Park',
-        time: '2023-25-3 23:00:00',
-    }, {
-        key: '2',
-        id: '3',
-        people_id: 32,
-        content: 'New York No. 1 Lake Park',
-        time: '2023-25-3 23:00:00',
-    }, {
-        key: '3',
-        id: '3',
-        people_id: 32,
-        content: 'New York No. 1 Lake Park',
-        time: '2023-25-3 23:00:00',
-    }, {
-        key: '4',
-        id: '3',
-        people_id: 32,
-        content: 'New York No. 1 Lake Park',
-        time: '2023-25-3 23:00:00',
-    }, {
-        key: '5',
-        id: '3',
-        people_id: 32,
-        content: 'New York No. 1 Lake Park',
-        time: '2023-25-3 23:00:00',
-    },
-];
+        "key": 0,
+        "identity": "儿童",
+        "content": "111",
+        "sendTime": "2024-04-25 20:20:46"
+    }
+]);
 const onChange: TableProps<TableDataType>['onChange'] = (pagination, filters, sorter) => {
     console.log('params', pagination, filters, sorter);
 };
-const goto = (x: any): void => {
-    console.log(x);
-}
+// const goto = (x: any): void => {
+//     console.log(x);
+// }
 </script>

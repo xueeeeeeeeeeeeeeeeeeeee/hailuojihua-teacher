@@ -43,6 +43,7 @@ interface Api {
   studentRegister(data:any): Promise<any>;
   getschoolList():Promise<any>;
   readOnehailuo(hailuoId:number):Promise<any>;
+  getallHailuo(studentid:number):Promise<any>;
 }
 
 const api: Api = {
@@ -51,6 +52,7 @@ const api: Api = {
   studentRegister: (data) => axiosInstance.post('/sign/studentRegister', data),
   getschoolList: () => axiosInstance.get(`/sign/schoolList`),
   readOnehailuo: (hailuoId) => axiosInstance.get(`/teacher/readOne/${hailuoId}`),
+  getallHailuo: (studentid) => axiosInstance.get(`/teacher/allHailuo/${studentid}`),
 };
 
 export default api;
