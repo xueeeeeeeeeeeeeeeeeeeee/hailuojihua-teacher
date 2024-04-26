@@ -1,11 +1,11 @@
 <template>
     <a-drawer title="该海螺详情" placement="right" :closable="false" v-model:open="visible" width="50%">
-        <chat></chat>
+        <chat :hailuoid="clickhailuo"></chat>
     </a-drawer>
     <a-button type="primary" :loading="state1.loading" @click="excel_output">
         导出为Excel
     </a-button>
-    <a-table :columns="columns" :data-source="data" @change="onChange" :pagination="{ pageSize: 10 }">
+    <a-table :columns="columns" :data-source="hailuodata" @change="onChange" :pagination="{ pageSize: 10 }">
         <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'operation'">
                 <a @click="goto(record)">查看</a>
@@ -17,11 +17,16 @@
 import {
     Excel
 } from '../utils/excel';
+import API from '../api/create'
 import ExcelJS from 'exceljs'
 import type { TableColumnType, TableProps } from 'ant-design-vue';
 import chat from './chat.vue'
-import { ref, reactive } from 'vue';
-const visible = ref<boolean>(true);
+import { ref, reactive, onMounted } from 'vue';
+// const props = defineProps<{
+//   message: string; // 声明 props 的类型
+// }>();
+const clickhailuo=ref<number>();
+const visible = ref<boolean>(false);
 const state1 = reactive<{
     selectedRowKeys: Key[];
     loading: boolean;
@@ -29,6 +34,74 @@ const state1 = reactive<{
     selectedRowKeys: [], // Check here to configure the default column
     loading: false,
 });
+type TableDataType = {
+    key: number;
+    hailuo_id: number;
+    volunteer_id: number;
+    children_id: number;
+    lastTime: string;
+    state: string;
+    unread: number;
+};
+type columnDataType = {
+    header: string;
+    key: number;
+};
+const columns: TableColumnType<TableDataType>[] = [
+    {
+        title: '海螺号',
+        dataIndex: 'hailuo_id',
+
+        sorter: (a: TableDataType, b: TableDataType) => a.hailuo_id - b.hailuo_id
+
+
+    },
+    {
+        title: '志愿者id',
+        dataIndex: 'volunteer_id',
+        defaultSortOrder: 'descend',
+
+    },
+
+    {
+        title: '最后时间',
+        dataIndex: 'lastTime',
+
+        sorter: (a: TableDataType, b: TableDataType) => a.lastTime.localeCompare(b.lastTime)
+
+    }, {
+        title: 'Action',
+        key: 'operation',
+        fixed: 'right',
+        width: 100,
+    },
+];
+
+const hailuodata = ref<TableDataType[]>([
+    // {
+    //     'key': '0',
+    //     "volunteer_id": 0,
+    //     "lastTime": "2024-04-25 20:20:47",
+    //     "unread": 0,
+    //     "hailuo_id": 54,
+    //     "children_id": 10038,
+    //     "state": "未分配"
+    // }
+]);
+onMounted(() => {
+    API.getallHailuo(10038)
+        .then((res) => {
+            console.log(res);
+            hailuodata.value = res.data.map((item:any, index:number) => {
+                return {
+                    ...item, // 将原来的属性保留
+                    key: index + 1 // 添加递增的键值，从 1 开始
+                };
+            });
+            console.log(hailuodata.value);
+
+        })
+})
 const excel_output = () => {
     let newFileName = '海螺聊天';
     state1.loading = true;
@@ -39,9 +112,9 @@ const excel_output = () => {
     }, 1000);
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet('sheet1');
-    const headers = Object.keys(data[0]);
+    const headers = Object.keys(hailuodata.value[0]);
     worksheet.addRow(headers);
-    data.forEach(row => {
+    hailuodata.value.forEach(row => {
         console.log(row);
         worksheet.addRow(Object.values(row));
     });
@@ -73,84 +146,14 @@ const excel_output = () => {
     });
 };
 
-type TableDataType = {
-    key: string;
-    id: string;
-    volunteer_id: number;
-    volunteer_name: string;
-    time: string
-};
-type columnDataType = {
-    header: string;
-    key: string;
-};
-const columns: TableColumnType<TableDataType>[] = [
-    {
-        title: '海螺号',
-        dataIndex: 'id',
-
-        sorter: (a: TableDataType, b: TableDataType) => a.id.localeCompare(b.id)
 
 
-    },
-    {
-        title: '志愿者id',
-        dataIndex: 'volunteer_id',
-        defaultSortOrder: 'descend',
-
-    },
-    {
-        title: '志愿者名字',
-        dataIndex: 'volunteer_name',
-        defaultSortOrder: 'descend',
-    },
-
-    {
-        title: '创建时间',
-        dataIndex: 'time',
-
-        sorter: (a: TableDataType, b: TableDataType) => a.time.localeCompare(b.time)
-
-    }, {
-        title: 'Action',
-        key: 'operation',
-        fixed: 'right',
-        width: 100,
-    },
-];
-
-const data: TableDataType[] = [
-    {
-        key: '1',
-        id: '3',
-        volunteer_id: 32,
-        volunteer_name: 'New York No. 1 Lake Park',
-        time: '2023-25-3 23:00:00',
-    }, {
-        key: '2',
-        id: '3',
-        volunteer_id: 32,
-        volunteer_name: 'New York No. 1 Lake Park',
-        time: '2023-25-1 23:00:00',
-    }, {
-        key: '3',
-        id: '3',
-        volunteer_id: 32,
-        volunteer_name: 'New York No. 1 Lake Park',
-        time: '2023-25-2 23:00:00',
-    }, {
-        key: '4',
-        id: '3',
-        volunteer_id: 32,
-        volunteer_name: 'New York No. 1 Lake Park',
-        time: '2023-25-5 23:00:00',
-    }
-];
 const onChange: TableProps<TableDataType>['onChange'] = (pagination, filters, sorter) => {
     console.log('params', pagination, filters, sorter);
 };
 const goto = (x: any): void => {
     visible.value = true;
-    console.log(x);
+    console.log(x.hailuo_id);
+    clickhailuo.value=x.hailuo_id
 }
 </script>

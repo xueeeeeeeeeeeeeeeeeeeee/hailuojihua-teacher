@@ -45,6 +45,7 @@ interface Api {
   readOnehailuo(hailuoId:number):Promise<any>;
   getStudentList():Promise<any>;
   getStudentCards(hailuoId:number):Promise<any>;
+  getallHailuo(studentid:number):Promise<any>;
 }
 
 const api: Api = {
@@ -55,6 +56,7 @@ const api: Api = {
   readOnehailuo: (hailuoId) => axiosInstance.get(`/teacher/readOne/${hailuoId}`),
   getStudentList: () => axiosInstance.get(`/teacher/studentList`),
   getStudentCards: (hailuoId) => axiosInstance.get(`/teacher/emotionalCardHistory/${hailuoId}`),
+  getallHailuo: (studentid) => axiosInstance.get(`/teacher/allHailuo/${studentid}`),
 };
 
 export default api;

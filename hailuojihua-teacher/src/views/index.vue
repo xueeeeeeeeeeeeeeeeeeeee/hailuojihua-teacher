@@ -12,10 +12,10 @@ import api from '../api/create'
 import { ref, onMounted } from 'vue';
 
 onMounted(() => {
-  api.readOnehailuo(1).then((res) => {
-    console.log(res);
+  // api.readOnehailuo(1).then((res) => {
+  //   console.log(res);
 
-  });
+  // });
 })
 
 
