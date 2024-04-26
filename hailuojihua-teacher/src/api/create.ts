@@ -46,6 +46,13 @@ interface Api {
   getStudentList():Promise<any>;
   getStudentCards(hailuoId:number):Promise<any>;
   getallHailuo(studentid:number):Promise<any>;
+  
+  getonetiezi(postId:number):Promise<any>;
+  getalltiezi(studentid:number):Promise<any>;
+  getalluser():Promise<any>;
+  getallpostNumber():Promise<any>;
+  getallhailuoNumber():Promise<any>;
+  getmoodPostHailuoNumber():Promise<any>;
 }
 
 const api: Api = {
@@ -57,6 +64,12 @@ const api: Api = {
   getStudentList: () => axiosInstance.get(`/teacher/studentList`),
   getStudentCards: (hailuoId) => axiosInstance.get(`/teacher/emotionalCardHistory/${hailuoId}`),
   getallHailuo: (studentid) => axiosInstance.get(`/teacher/allHailuo/${studentid}`),
+  getalltiezi: (studentid) => axiosInstance.get(`/teacher/userPosts/${studentid}`),
+  getonetiezi: (postId) => axiosInstance.get(`/teacher/viewCompletePost/${postId}`),
+  getalluser: () => axiosInstance.get(`/statistics/userNumber`),
+  getallpostNumber: () => axiosInstance.get(`/statistics/postNumber`),
+  getallhailuoNumber: () => axiosInstance.get(`/statistics/hailuoNumber`),
+  getmoodPostHailuoNumber: () => axiosInstance.get(`/statistics/moodPostHailuoNumber`),
 };
 
 export default api;

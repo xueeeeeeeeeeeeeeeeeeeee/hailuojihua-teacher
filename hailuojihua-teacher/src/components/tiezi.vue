@@ -1,11 +1,11 @@
 <template>
-    <a-drawer title="该海螺详情" placement="right" :closable="false" v-model:open="visible" width="50%">
-        <chat :hailuoid="clickhailuo"></chat>
+    <a-drawer title="该帖子详情" placement="right" :closable="false" v-model:open="visible" width="50%">
+        <tiezidetail :hailuoid="clickhailuo"></tiezidetail>
     </a-drawer>
-    <a-button type="primary" :loading="state1.loading" @click="excel_output">
+    <!-- <a-button type="primary" :loading="state1.loading" @click="excel_output">
         导出为Excel
-    </a-button>
-    <a-table :columns="columns" :data-source="hailuodata" @change="onChange" :pagination="{ pageSize: 10 }">
+    </a-button> -->
+    <a-table :columns="columns" :data-source="tiezidata" @change="onChange" :pagination="{ pageSize: 10 }">
         <template #bodyCell="{ column, record }">
             <template v-if="column.key === 'operation'">
                 <a @click="goto(record)">查看</a>
@@ -20,7 +20,7 @@ import {
 import API from '../api/create'
 import ExcelJS from 'exceljs'
 import type { TableColumnType, TableProps } from 'ant-design-vue';
-import chat from './chat.vue'
+import tiezidetail from './tiezidetail.vue'
 import { ref, reactive, onMounted, watch } from 'vue';
 const props = defineProps<{
     studentid: number; // 声明 props 的类型
@@ -34,16 +34,16 @@ init();
 const init=()=>{
     console.log(props.studentid);
     
-    API.getallHailuo(props.studentid)
+    API.getalltiezi(props.studentid)
         .then((res) => {
             console.log(res);
-            hailuodata.value = res.data.map((item: any, index: number) => {
+            tiezidata.value = res.data.map((item: any, index: number) => {
                 return {
                     ...item, // 将原来的属性保留
                     key: index + 1 // 添加递增的键值，从 1 开始
                 };
             });
-            console.log(hailuodata.value);
+            console.log(tiezidata.value);
 
         })
 }
@@ -58,12 +58,10 @@ const state1 = reactive<{
 });
 type TableDataType = {
     key: number;
-    hailuo_id: number;
-    volunteer_id: number;
-    children_id: number;
-    lastTime: string;
-    state: string;
-    unread: number;
+    postId: number;
+    title: string;
+    content: string;
+    createTime: string;
 };
 type columnDataType = {
     header: string;
@@ -71,25 +69,29 @@ type columnDataType = {
 };
 const columns: TableColumnType<TableDataType>[] = [
     {
-        title: '海螺号',
-        dataIndex: 'hailuo_id',
+        title: '帖子号',
+        dataIndex: 'postId',
 
-        sorter: (a: TableDataType, b: TableDataType) => a.hailuo_id - b.hailuo_id
+        sorter: (a: TableDataType, b: TableDataType) => a.postId - b.postId
 
 
     },
     {
-        title: '志愿者id',
-        dataIndex: 'volunteer_id',
+        title: '标题',
+        dataIndex: 'title',
         defaultSortOrder: 'descend',
 
+    }, {
+        title: '内容',
+        dataIndex: 'content',
+
     },
 
     {
-        title: '最后时间',
-        dataIndex: 'lastTime',
+        title: '时间',
+        dataIndex: 'createTime',
 
-        sorter: (a: TableDataType, b: TableDataType) => a.lastTime.localeCompare(b.lastTime)
+        sorter: (a: TableDataType, b: TableDataType) => a.createTime.localeCompare(b.createTime)
 
     }, {
         title: 'Action',
@@ -99,7 +101,7 @@ const columns: TableColumnType<TableDataType>[] = [
     },
 ];
 
-const hailuodata = ref<TableDataType[]>([
+const tiezidata = ref<TableDataType[]>([
     // {
     //     'key': '0',
     //     "volunteer_id": 0,
@@ -165,6 +167,6 @@ const onChange: TableProps<TableDataType>['onChange'] = (pagination, filters, so
 const goto = (x: any): void => {
     visible.value = true;
     console.log(x.hailuo_id);
-    clickhailuo.value = x.hailuo_id
+    clickhailuo.value = x.postId
 }
 </script>
