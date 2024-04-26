@@ -152,7 +152,7 @@ export class Excel {
       })
       excelList.push(tempObj);
     })
-    return excelList;
+    return excelList.slice(1);
   }
 
   /**

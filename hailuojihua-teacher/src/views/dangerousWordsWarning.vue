@@ -13,7 +13,7 @@
       <a-upload v-model:file-list="fileList" action="xxx" accept=".xlsx" name="file" :headers="headers"
         :before-upload="beforeUpload" @change="handleChange">
         <a-button>
-          导入excel
+          导入Excel
         </a-button>
       </a-upload>
     </div>

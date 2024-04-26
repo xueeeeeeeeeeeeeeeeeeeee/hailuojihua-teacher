@@ -43,14 +43,18 @@ interface Api {
   studentRegister(data:any): Promise<any>;
   getschoolList():Promise<any>;
   readOnehailuo(hailuoId:number):Promise<any>;
+  getStudentList():Promise<any>;
+  getStudentCards(hailuoId:number):Promise<any>;
 }
 
 const api: Api = {
   login: (data) => axiosInstance.post('/sign/psd_login', data),
   readOnestudent: (hailuoId) => axiosInstance.get(`/teacher/readOne/${hailuoId}`),
-  studentRegister: (data) => axiosInstance.post('/sign/studentRegister', data),
+  studentRegister: (data) => axiosInstance.post('/teacher/studentRegister', data),
   getschoolList: () => axiosInstance.get(`/sign/schoolList`),
   readOnehailuo: (hailuoId) => axiosInstance.get(`/teacher/readOne/${hailuoId}`),
+  getStudentList: () => axiosInstance.get(`/teacher/studentList`),
+  getStudentCards: (hailuoId) => axiosInstance.get(`/teacher/emotionalCardHistory/${hailuoId}`),
 };
 
 export default api;

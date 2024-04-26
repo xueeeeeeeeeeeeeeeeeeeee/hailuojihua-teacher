@@ -1,37 +1,55 @@
 <template>
     <a-table :columns="columns" :data-source="data" @change="onChange" :pagination="{ pageSize: 10 }">
-    <template #bodyCell="{ column }">
+    <template #bodyCell="{ column,record }">
         <template v-if="column.key === 'operation'">
-            <a @click="showModal">详情</a>
+            <a @click="showModal(record)">详情</a>
         </template>
     </template>
     </a-table>
     <a-modal v-model:open="open" title="记录详情" @ok="handleOk">
         <a-descriptions bordered :size="size">
-            <a-descriptions-item label="卡片内容"  span="3">哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</a-descriptions-item>
+            <a-descriptions-item label="卡片标题"  span="3"><div class="width-limit">{{ record.title }}</div></a-descriptions-item>
+            <a-descriptions-item label="卡片内容"  span="3"><div class="width-limit">{{ record.content }}</div></a-descriptions-item>
             <a-descriptions-item label="卡片图" span="3">
                 <a-image
                     :width="200"
-                    src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                    :src="`http://124.220.40.115:82/images/pic3/${record.image}`"
                 />
             </a-descriptions-item>
-            <a-descriptions-item label="抽取时间" span="3">18:00:00</a-descriptions-item>
-            <a-descriptions-item label="结束时间" span="3">18:00:00</a-descriptions-item>
-            <a-descriptions-item label="学生感想" span="3"><div class="feeling">哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈</div></a-descriptions-item>
+            <a-descriptions-item label="抽取时间" span="3"><div class="width-limit">{{ record.createTime }}</div></a-descriptions-item>
+            <a-descriptions-item label="学生感想" span="3"><div class="width-limit">{{ record.feedback }}</div></a-descriptions-item>
         </a-descriptions>
     </a-modal>
 </template>
 
 <script setup lang="ts">
 import type { TableColumnType, TableProps } from 'ant-design-vue';
-import { ref } from 'vue';
+import { reactive, ref, watch , defineProps , toRef, toRefs} from 'vue';
 import type { DescriptionsProps } from 'ant-design-vue';
+import api from '../api/create';
 
+const props = defineProps(['userId'])
+
+watch(props,(newValue,oldValue)=>{
+    //获取学生卡片列表
+    api.getStudentCards(newValue.userId)
+    .then((res)=>{
+        console.log(res);
+        data.value = res.data;
+    })
+    .catch((error)=>{
+        console.log(error);
+    })
+},
+{deep:true})
 const size = ref<DescriptionsProps['size']>('default');
 const open = ref<boolean>(false);
+const record = ref({});
 
-const showModal = () => {
+//控制窗口弹出
+const showModal = (res:any) => {
   open.value = true;
+  record.value = res;
 };
 
 const handleOk = (e: MouseEvent) => {
@@ -39,35 +57,38 @@ const handleOk = (e: MouseEvent) => {
   open.value = false;
 };
 
+
+//表格数据类型
 type TableDataType = {
-    key: string;
-    cardcontent: string;
-    starttime: string;
-    finishedtime: string;
-    feeling: string
+    cardId: number,
+    content: string,
+    createTime: string,
+    feedback: string,
+    image: string,
+    logId: number,
+    title: string
 };
 
+//表格标头
 const columns: TableColumnType<TableDataType>[] = [
     {
+        title: '卡片标题',
+        dataIndex: 'title',
+        ellipsis: true,
+    },
+    {
         title: '卡片内容',
-        dataIndex: 'cardcontent',
+        dataIndex: 'content',
         ellipsis: true,
     },
     {
         title: '抽取时间',
-        dataIndex: 'starttime',
-        sorter: (a: TableDataType, b: TableDataType) => a.starttime.localeCompare(b.starttime)
+        dataIndex: 'createTime',
+        sorter: (a: TableDataType, b: TableDataType) => a.createTime.localeCompare(b.createTime)
     },
-    
-    {
-        title: '完成时间',
-        dataIndex: 'finishedtime',
-        sorter: (a: TableDataType, b: TableDataType) => a.finishedtime.localeCompare(b.finishedtime),
-    },
-
     {
         title: '学生感想',
-        dataIndex: 'feeling',
+        dataIndex: 'feedback',
         ellipsis: true,
     },
     {
@@ -76,50 +97,25 @@ const columns: TableColumnType<TableDataType>[] = [
     }
 ];
 
-const data: TableDataType[] = [
-    {
-        key: 'asdasd',
-        cardcontent: '天天开心~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~',
-        starttime: '2024/4/15 10:47',
-        finishedtime: '2024/4/15 10:48',
-        feeling: '我很开心'
-    }, {
-        key: 'asdasd',
-        cardcontent: '天天开心',
-        starttime: '2024/4/15 10:47',
-        finishedtime: '2024/4/15 10:48',
-        feeling: '我很开心'
-    }, {
-        key: 'asdasd',
-        cardcontent: '天天开心',
-        starttime: '2024/4/15 10:47',
-        finishedtime: '2024/4/15 10:48',
-        feeling: '我很开心'
-    }, {
-        key: 'asdasd',
-        cardcontent: '天天开心',
-        starttime: '2024/4/15 10:47',
-        finishedtime: '2024/4/15 10:48',
-        feeling: '我很开心'
-    }, {
-        key: 'asdasd',
-        cardcontent: '天天开心',
-        starttime: '2024/4/15 10:47',
-        finishedtime: '2024/4/15 10:48',
-        feeling: '我很开心'
-    },
-];
+const data: TableDataType[] = ref([]);
 const onChange: TableProps<TableDataType>['onChange'] = (pagination, filters, sorter) => {
     console.log('params', pagination, filters, sorter);
 };
-const goto = (x: any): void => {
-    console.log(x);
-}
+
+//获取学生卡片列表
+api.getStudentCards(props.userId)
+.then((res)=>{
+    console.log(res);
+    data.value = res.data;
+})
+.catch((error)=>{
+    console.log(error);
+})
 </script>
 
 <style scoped>
 
-.feeling{
+.width-limit{
     max-width: 300px;
 }
 :v-deep .ant-descriptions-item-label{
