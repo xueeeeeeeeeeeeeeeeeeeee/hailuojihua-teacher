@@ -51,6 +51,12 @@ interface Api {
   postDeleteSensitiveWords(sensitiveId: any):Promise<any>;
   getHailuoSensitiveWordLog():Promise<any>;
   getForumSensitiveWordLog():Promise<any>;
+  getonetiezi(postId:number):Promise<any>;
+  getalltiezi(studentid:number):Promise<any>;
+  getalluser():Promise<any>;
+  getallpostNumber():Promise<any>;
+  getallhailuoNumber():Promise<any>;
+  getmoodPostHailuoNumber():Promise<any>;
 }
 
 const api: Api = {
@@ -67,6 +73,12 @@ const api: Api = {
   postDeleteSensitiveWords: (sensitiveId) => axiosInstance.post(`/teacher/deleteSensitiveWord/${sensitiveId}`),
   getHailuoSensitiveWordLog: () => axiosInstance.get(`/teacher/HailuoSensitiveWordLog`),
   getForumSensitiveWordLog: () => axiosInstance.get(`/teacher/ForumSensitiveWordLog`),
+  getalltiezi: (studentid) => axiosInstance.get(`/teacher/userPosts/${studentid}`),
+  getonetiezi: (postId) => axiosInstance.get(`/teacher/viewCompletePost/${postId}`),
+  getalluser: () => axiosInstance.get(`/statistics/userNumber`),
+  getallpostNumber: () => axiosInstance.get(`/statistics/postNumber`),
+  getallhailuoNumber: () => axiosInstance.get(`/statistics/hailuoNumber`),
+  getmoodPostHailuoNumber: () => axiosInstance.get(`/statistics/moodPostHailuoNumber`),
 };
 
 export default api;
