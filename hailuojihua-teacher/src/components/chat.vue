@@ -47,7 +47,6 @@ const columns: TableColumnType<TableDataType>[] = [
     {
         title: '发送时间',
         dataIndex: 'sendTime',
-
         sorter: (a: TableDataType, b: TableDataType) => a.time.localeCompare(b.time)
 
     },

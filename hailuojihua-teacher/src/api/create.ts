@@ -46,6 +46,11 @@ interface Api {
   getStudentList():Promise<any>;
   getStudentCards(hailuoId:number):Promise<any>;
   getallHailuo(studentid:number):Promise<any>;
+  getSensitiveWordsList():Promise<any>;
+  postSensitiveWords(data: any):Promise<any>;
+  postDeleteSensitiveWords(sensitiveId: any):Promise<any>;
+  getHailuoSensitiveWordLog():Promise<any>;
+  getForumSensitiveWordLog():Promise<any>;
 }
 
 const api: Api = {
@@ -57,6 +62,11 @@ const api: Api = {
   getStudentList: () => axiosInstance.get(`/teacher/studentList`),
   getStudentCards: (hailuoId) => axiosInstance.get(`/teacher/emotionalCardHistory/${hailuoId}`),
   getallHailuo: (studentid) => axiosInstance.get(`/teacher/allHailuo/${studentid}`),
+  getSensitiveWordsList: () => axiosInstance.get(`/teacher/sensitiveWordList`),
+  postSensitiveWords: (data) => axiosInstance.post('/teacher/postSensitiveWord', data),
+  postDeleteSensitiveWords: (sensitiveId) => axiosInstance.post(`/teacher/deleteSensitiveWord/${sensitiveId}`),
+  getHailuoSensitiveWordLog: () => axiosInstance.get(`/teacher/HailuoSensitiveWordLog`),
+  getForumSensitiveWordLog: () => axiosInstance.get(`/teacher/ForumSensitiveWordLog`),
 };
 
 export default api;

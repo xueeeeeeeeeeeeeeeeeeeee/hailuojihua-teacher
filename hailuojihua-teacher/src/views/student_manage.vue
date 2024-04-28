@@ -59,8 +59,7 @@
     TableProps
   } from 'ant-design-vue';
   import {
-    message,
-    notification
+    message
   } from 'ant-design-vue';
   import type {
     UploadChangeParam
@@ -75,7 +74,8 @@
 
   type Key = string | number;
 
-  type TableDataType = {
+  interface TableDataType{
+    [key: string]: any;
     name: string;
     id: string;
     className: string;
@@ -86,26 +86,23 @@
   let gameVisible = ref < Boolean > (false);
   let userId = ref();
   let username = ref();
-  let NotificationDescription = '';
 
-  const openNotification = () => {
-    notification.open({
-      message: '操作失败~~',
-      description: NotificationDescription,
-      onClick: () => {
-        console.log('Notification Clicked!');
-      },
-    });
+  const errorMes = (mes) => {
+    message.error(mes,3);
   };
-
-  const success = () => {
-    message.success('XLSX文件导入成功~~', 3);
+  const key = 'updatable';
+  const openMessage = (status:string) => {
+    message.loading({ content: '上传中...', key, duration: 0});
+    if(status === 'isblank'){
+      message.error({ content: '检测到表单中有空白值，请重新上传！', key, duration: 3 });
+    }else if(status === 'isrepeat'){
+      message.error({ content: '检测到表单中有重复用户名，请重新上传！', key, duration: 3 });
+    }else if(status === 'notcomplete'){
+      message.warning({ content: '有个别未上传成功，请重新上传未成功项!', key, duration: 2 });
+    }else if(status === 'isfinished'){
+      message.success({ content: '上传成功!', key, duration: 2 });
+    }
   };
-  const progress = () => {
-    const hide = message.loading('文件上传中，稍安勿躁~~', 0);
-    setTimeout(hide, 2500);
-  };
-
 
   function changeChatVisible() {
     chatVisible.value = true;
@@ -117,7 +114,8 @@
     username = info.name;
   }
 
-  const columns: TableColumnType < TableDataType > [] = [{
+  const columns: TableColumnType < TableDataType > [] = [
+    {
       title: '姓名',
       dataIndex: 'name',
     },
@@ -177,7 +175,6 @@
         }
       ],
       onFilter: (value: string, record: TableDataType) => record.className.indexOf(value) === 0,
-
     },
     {
       title: '昵称',
@@ -260,19 +257,51 @@
     authorization: 'authorization-text',
   };
 
+  //在对象数组中的每个对象加一个key值
+  function addKey(array:any) {
+    return array.map((obj:Object, index:number) => {
+      return { key: index + 1,...obj};
+    });
+  }
+
   //请求获取本校学生列表
   api.getStudentList()
     .then((res) => {
       console.log(res);
-      dataSource.value = res.data;
+      dataSource.value = addKey(res.data);
     })
     .catch((error) => {
       console.log(error);
     })
 
+    // 判断数组中是否有对象拥有重复的 username
+  function hasDuplicateUsername(array:any) {
+    const usernames = new Set();
+    for (const obj of array) {
+      if (usernames.has(obj.username)) {
+        return true; // 发现重复的 username
+      }
+      usernames.add(obj.username);
+    }
+    return false; // 没有重复的 username
+  }
+
+  // 判断数组中是否有对象的属性为空
+  function hasMissingProperties(array:any) {
+    const requiredProps = ['className','password', 'name', 'username']
+    for (const obj of array) {
+      for (const prop of requiredProps) {
+        if (!(prop in obj)) {
+          return true; // 发现缺少属性的对象
+        }
+      }
+    }
+    return false; // 没有缺少属性的对象
+  }
   // 导入excel
   const beforeUpload: UploadProps['beforeUpload'] = async (file: any) => {
-    console.log(file);
+    let flag = 1;
+    openMessage('');
     const header = ['username', 'name', "className", "password"];
     try {
       const excel = new Excel(file);
@@ -281,20 +310,38 @@
         header
       });
       console.log(res);
-
+      //在注册前对数据进行检测
+      if(hasMissingProperties(res)){
+        openMessage('isblank');
+        return new Promise(() => {});
+      }else if(hasDuplicateUsername(res)){
+        openMessage('isrepeat');
+        return new Promise(() => {});
+      }
       const promises: any = [];
       promises.push(
         api.studentRegister({
           studentList: res
         })
-        .then((res) => {
+        .then((res) => {     
           console.log(res);
+          res.data.forEach((item: { status: string; username: string; }) => {
+            if(item.status==="用户名已存在"){
+              errorMes(item.username + '用户名已存在，请重新上传！');
+              flag = 0;
+            }     
+            if(flag === 1){
+              openMessage('isfinished');
+            }else{
+              openMessage('notcomplete');
+            }
+          });
         })
         .catch((error) => {
           console.log(error);
+          errorMes(error);
         })
       );
-
 
       Promise.all(promises)
         .then(() => {
@@ -302,7 +349,8 @@
         })
         .then((studentList) => {
           console.log(studentList);
-          dataSource.value = res.data;
+          dataSource.value = studentList.data;
+          console.log('dataSource',dataSource);
         })
         .catch((error) => {
           console.error(error);
