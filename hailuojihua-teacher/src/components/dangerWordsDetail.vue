@@ -50,13 +50,12 @@ const columns: TableColumnType<TableDataType>[] = [
     {
         title: '聊天时间',
         dataIndex: 'chattime',
-        sorter: (a: TableDataType, b: TableDataType) => a.starttime.localeCompare(b.starttime)
+        sorter: (a: TableDataType, b: TableDataType) => a.chattime.localeCompare(b.chattime)
     },
     
     {
         title: '敏感词',
         dataIndex: 'dangerouskeywords',
-        sorter: (a: TableDataType, b: TableDataType) => a.finishedtime.localeCompare(b.finishedtime),
     },
 
     {
@@ -82,9 +81,7 @@ const data: TableDataType[] = [
 const onChange: TableProps<TableDataType>['onChange'] = (pagination, filters, sorter) => {
     console.log('params', pagination, filters, sorter);
 };
-const goto = (x: any): void => {
-    console.log(x);
-}
+
 </script>
 
 <style scoped>

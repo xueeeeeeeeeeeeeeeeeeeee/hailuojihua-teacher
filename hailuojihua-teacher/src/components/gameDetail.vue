@@ -24,13 +24,13 @@
 
 <script setup lang="ts">
 import type { TableColumnType, TableProps } from 'ant-design-vue';
-import { reactive, ref, watch , defineProps , toRef, toRefs} from 'vue';
+import {  ref, watch , defineProps } from 'vue';
 import type { DescriptionsProps } from 'ant-design-vue';
 import api from '../api/create';
 
 const props = defineProps(['userId'])
 
-watch(props,(newValue,oldValue)=>{
+watch(props,(newValue)=>{
     //获取学生卡片列表
     api.getStudentCards(newValue.userId)
     .then((res)=>{
@@ -44,7 +44,7 @@ watch(props,(newValue,oldValue)=>{
 {deep:true})
 const size = ref<DescriptionsProps['size']>('default');
 const open = ref<boolean>(false);
-const record = ref({});
+const record = ref<any>({});
 
 //控制窗口弹出
 const showModal = (res:any) => {
@@ -97,7 +97,7 @@ const columns: TableColumnType<TableDataType>[] = [
     }
 ];
 
-const data: TableDataType[] = ref([]);
+const data = ref<TableDataType[]>([]);
 const onChange: TableProps<TableDataType>['onChange'] = (pagination, filters, sorter) => {
     console.log('params', pagination, filters, sorter);
 };

@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosInstance,  AxiosError } from 'axios';
 import router from '../router'; // 假设你的路由器实例被导入为 router
 
 // 创建 Axios 实例
@@ -14,7 +14,7 @@ axiosInstance.interceptors.request.use(
     console.log(token);
     
     if (token) {
-      config.headers = config.headers || {};
+      // config.headers = config.headers || {};
       config.headers.Authorization =token;
     }
     return config;

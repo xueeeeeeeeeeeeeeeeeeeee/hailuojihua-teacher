@@ -14,18 +14,16 @@
     </a-table>
 </template>
 <script lang="ts" setup>
-import {
-    Excel
-} from '../utils/excel';
+
 import API from '../api/create'
-import ExcelJS from 'exceljs'
+
 import type { TableColumnType, TableProps } from 'ant-design-vue';
 import tiezidetail from './tiezidetail.vue'
 import { ref, reactive, onMounted, watch } from 'vue';
 const props = defineProps<{
     studentid: number; // 声明 props 的类型
 }>();
-watch(props, (newvals, old) => {
+watch(props, () => {
 init();
 
 },{
@@ -49,13 +47,13 @@ const init=()=>{
 }
 const clickhailuo = ref<number>();
 const visible = ref<boolean>(false);
-const state1 = reactive<{
-    selectedRowKeys: Key[];
-    loading: boolean;
-}>({
-    selectedRowKeys: [], // Check here to configure the default column
-    loading: false,
-});
+// const state1 = reactive<{
+//     selectedRowKeys: any[];
+//     loading: boolean;
+// }>({
+//     selectedRowKeys: [], // Check here to configure the default column
+//     loading: false,
+// });
 type TableDataType = {
     key: number;
     postId: number;
@@ -63,10 +61,10 @@ type TableDataType = {
     content: string;
     createTime: string;
 };
-type columnDataType = {
-    header: string;
-    key: number;
-};
+// type columnDataType = {
+//     header: string;
+//     key: number;
+// };
 const columns: TableColumnType<TableDataType>[] = [
     {
         title: '帖子号',
@@ -113,51 +111,53 @@ const tiezidata = ref<TableDataType[]>([
     // }
 ]);
 onMounted(() => {
+    console.log(props.studentid);
+    
 init();
 })
-const excel_output = () => {
-    let newFileName = '海螺聊天';
-    state1.loading = true;
-    // ajax request after empty completing
-    setTimeout(() => {
-        state1.loading = false;
-        state1.selectedRowKeys = [];
-    }, 1000);
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('sheet1');
-    const headers = Object.keys(hailuodata.value[0]);
-    worksheet.addRow(headers);
-    hailuodata.value.forEach(row => {
-        console.log(row);
-        worksheet.addRow(Object.values(row));
-    });
-    let x: columnDataType[] = columns.map((columnItem) => {
-        const { title, dataIndex } = columnItem;
-        return {
-            header: title,
-            key: dataIndex,
+// const excel_output = () => {
+//     let newFileName = '海螺聊天';
+//     state1.loading = true;
+//     // ajax request after empty completing
+//     setTimeout(() => {
+//         state1.loading = false;
+//         state1.selectedRowKeys = [];
+//     }, 1000);
+//     const workbook = new ExcelJS.Workbook();
+//     const worksheet = workbook.addWorksheet('sheet1');
+//     const headers = Object.keys(hailuodata.value[0]);
+//     worksheet.addRow(headers);
+//     hailuodata.value.forEach(row => {
+//         console.log(row);
+//         worksheet.addRow(Object.values(row));
+//     });
+//     let x: columnDataType[] = columns.map((columnItem) => {
+//         const { title, dataIndex } = columnItem;
+//         return {
+//             header: title,
+//             key: dataIndex,
 
-        } as columnDataType;
-    });
-    x.unshift({
-        header: "索引",
-        key: "key",
-    });
-    x.pop()
-    worksheet.columns = x;
-    workbook.xlsx.writeBuffer().then((data) => {
-        let blob = new Blob([data], {
-            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = newFileName + '.xlsx';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(a.href);
-    });
-};
+//         } as columnDataType;
+//     });
+//     x.unshift({
+//         header: "索引",
+//         key: "key",
+//     });
+//     x.pop()
+//     worksheet.columns = x;
+//     workbook.xlsx.writeBuffer().then((data) => {
+//         let blob = new Blob([data], {
+//             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+//         });
+//         const a = document.createElement('a');
+//         a.href = URL.createObjectURL(blob);
+//         a.download = newFileName + '.xlsx';
+//         document.body.appendChild(a);
+//         a.click();
+//         document.body.removeChild(a);
+//         window.URL.revokeObjectURL(a.href);
+//     });
+// };
 
 
 

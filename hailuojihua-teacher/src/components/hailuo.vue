@@ -14,9 +14,7 @@
     </a-table>
 </template>
 <script lang="ts" setup>
-import {
-    Excel
-} from '../utils/excel';
+
 import API from '../api/create'
 import ExcelJS from 'exceljs'
 import type { TableColumnType, TableProps } from 'ant-design-vue';
@@ -25,7 +23,7 @@ import { ref, reactive, onMounted, watch } from 'vue';
 const props = defineProps<{
     studentid: number; // 声明 props 的类型
 }>();
-watch(props, (newvals, old) => {
+watch(props, () => {
 init();
 
 },{
@@ -50,7 +48,7 @@ const init=()=>{
 const clickhailuo = ref<number>();
 const visible = ref<boolean>(false);
 const state1 = reactive<{
-    selectedRowKeys: Key[];
+    selectedRowKeys: any[];
     loading: boolean;
 }>({
     selectedRowKeys: [], // Check here to configure the default column
@@ -122,7 +120,7 @@ const excel_output = () => {
         state1.selectedRowKeys = [];
     }, 1000);
     const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('sheet1');
+    const worksheet:any = workbook.addWorksheet('sheet1');
     const headers = Object.keys(hailuodata.value[0]);
     worksheet.addRow(headers);
     hailuodata.value.forEach(row => {
@@ -139,7 +137,7 @@ const excel_output = () => {
     });
     x.unshift({
         header: "索引",
-        key: "key",
+        key: null,
     });
     x.pop()
     worksheet.columns = x;

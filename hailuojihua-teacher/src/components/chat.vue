@@ -5,12 +5,18 @@
 <script lang="ts" setup>
 
 import type { TableColumnType, TableProps } from 'ant-design-vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import API from '../api/create'
 const props = defineProps<{
     hailuoid: number; // 声明 props 的类型
 }>();
-onMounted(() => {
+watch(props, () => {
+    init();
+
+}, {
+    deep: true
+});
+const init = () => {
     console.log(props.hailuoid);
     API.readOnehailuo(props.hailuoid)
         .then((res) => {
@@ -23,6 +29,10 @@ onMounted(() => {
                 };
             });
         })
+}
+onMounted(() => {
+    init()
+
 })
 type TableDataType = {
     key: number;
@@ -47,7 +57,7 @@ const columns: TableColumnType<TableDataType>[] = [
     {
         title: '发送时间',
         dataIndex: 'sendTime',
-        sorter: (a: TableDataType, b: TableDataType) => a.time.localeCompare(b.time)
+        sorter: (a: TableDataType, b: TableDataType) => a.sendTime.localeCompare(b.sendTime)
 
     },
 ];

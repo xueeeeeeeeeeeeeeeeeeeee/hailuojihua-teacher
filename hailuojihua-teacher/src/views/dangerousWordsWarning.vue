@@ -171,13 +171,13 @@
       }],
       onFilter: (value: string, record: TableDataType) => record.belong.indexOf(value) === 0,
     },
-    {
-      title: '操作',
-      key: 'action',
-      dataIndex: 'action',
-      fixed: 'right',
-      width: 100,
-    },
+    // {
+    //   title: '操作',
+    //   key: 'action',
+    //   dataIndex: 'action',
+    //   fixed: 'right',
+    //   width: 100,
+    // },
   ];
 
   const columns2: TableColumnType < TableDataType2 > [] = [

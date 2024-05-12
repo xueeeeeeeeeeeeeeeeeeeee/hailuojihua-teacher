@@ -1,6 +1,3 @@
-<script setup>
-
-</script>
 
 <template>
   <div class="Header">
@@ -8,20 +5,30 @@
       hailuojihua
     </div>
     <div class="Header-right">
-<img src="../assets/dog.jpg" alt="">
+      <a-button @click="logout">退出登录</a-button>
+<!-- <img src="../assets/dog.jpg" alt=""> -->
     </div>
   </div>
 </template>
-
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const logout=()=>{
+  localStorage.clear();
+  router.push('/login')
+}
+</script>
 <style scoped>
 .Header {
-  padding: 0px 30px 0px  ;
+  box-sizing: border-box;
+  padding: 0px 100px 0px  ;
   width: 100%;
   height: 100%;
   display: flex;
 justify-content: space-between;
 }
 .Header-right{
+
   height: 40px;
   width: 40px;
 }

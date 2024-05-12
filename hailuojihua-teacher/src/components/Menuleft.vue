@@ -23,7 +23,7 @@ import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 const selectedKeys = ref(['1']);
 const router = useRouter();
-watch(selectedKeys, (newVal, oldVal) => {
+watch(selectedKeys, (newVal) => {
     console.log(newVal[0]);
     if (newVal[0] === '1') {
         router.push('/');
