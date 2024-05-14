@@ -43,5 +43,6 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Tiezi: typeof import('./src/components/tiezi.vue')['default']
     Tiezidetail: typeof import('./src/components/tiezidetail.vue')['default']
+    Zhucevolunteer: typeof import('./src/components/zhucevolunteer.vue')['default']
   }
 }

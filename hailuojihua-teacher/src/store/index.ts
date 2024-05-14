@@ -10,9 +10,14 @@ interface User {
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     isLoggedIn: false,
+    ismanager: false,
     user: null as User | null,
   }),
   actions: {
+    manage() {
+      this.ismanager = true ;
+
+    },
     login(username: string, password: string) {
       // 模拟登录请求
       // 如果登录成功，设置 isLoggedIn 为 true，并保存用户信息

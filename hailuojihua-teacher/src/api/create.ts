@@ -57,6 +57,8 @@ interface Api {
   getallpostNumber():Promise<any>;
   getallhailuoNumber():Promise<any>;
   getmoodPostHailuoNumber():Promise<any>;
+  activityregistration(data:any):Promise<any>;
+  volunteerRegister(data:any):Promise<any>;
 }
 
 const api: Api = {
@@ -79,6 +81,8 @@ const api: Api = {
   getallpostNumber: () => axiosInstance.get(`/statistics/postNumber`),
   getallhailuoNumber: () => axiosInstance.get(`/statistics/hailuoNumber`),
   getmoodPostHailuoNumber: () => axiosInstance.get(`/statistics/moodPostHailuoNumber`),
+  activityregistration:(data)=> axiosInstance.post('/root/activity_registration', data),
+  volunteerRegister:(data)=> axiosInstance.post('/adm/volunteerRegister', data),
 };
 
 export default api;

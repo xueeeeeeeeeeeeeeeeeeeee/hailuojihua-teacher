@@ -4,10 +4,10 @@
             <h2 class="login-title">海螺计划教学教师后台</h2>
             <a-form :model="loginForm" :rules="rules" label-width="80px" class="login-form">
                 <a-form-item label="用户名" name="userid">
-                    <a-input  v-model:value="loginForm.userid" placeholder="请输入用户名"></a-input>
+                    <a-input v-model:value="loginForm.userid" placeholder="请输入用户名"></a-input>
                 </a-form-item>
                 <a-form-item label="密码" name="password">
-                    <a-input  v-model:value="loginForm.password" placeholder="请输入密码" type="password"></a-input>
+                    <a-input v-model:value="loginForm.password" placeholder="请输入密码" type="password"></a-input>
                 </a-form-item>
                 <!-- 按钮居中 -->
                 <a-button type="primary" @click="handleLogin" style="margin: 0 auto;">登录后台管理系统</a-button>
@@ -19,6 +19,8 @@
 import api from '../api/create'
 import { ref } from 'vue'
 import router from '../router/index'
+import { useAuthStore } from '../store/index'
+const AuthStore = useAuthStore();
 interface LoginForm {
     userid: string;
     password: string;
@@ -35,9 +37,11 @@ const handleLogin: any = () => {
         "password": loginForm.value.password
     }).then((res) => {
         console.log(loginForm.value);
-
-        console.log(res);
-        localStorage.setItem("token",res.data.token)
+        if (res.msg == "管理员登录成功") {
+            AuthStore.manage();
+        }
+        console.log(res.msg);
+        localStorage.setItem("token", res.data.token)
         // console.log(localStorage.getItem('token'));
 
         router.push('/');

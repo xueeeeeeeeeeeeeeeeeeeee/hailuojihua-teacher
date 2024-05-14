@@ -6,13 +6,17 @@
                 <AlignRightOutlined />
                 <span>主页</span>
             </a-menu-item>
-            <a-menu-item key="2">
+            <a-menu-item key="2" v-if="!ismanager">
                 <IdcardOutlined />
                 <span>学生管理</span>
             </a-menu-item>
-            <a-menu-item key="3">
+            <a-menu-item key="3" v-if="!ismanager">
                 <ExclamationCircleOutlined />
                 <span>敏感词管理</span>
+            </a-menu-item>
+            <a-menu-item key="4" v-if="ismanager">
+                <ExclamationCircleOutlined />
+                <span>志愿者导入与上班时间导入</span>
             </a-menu-item>
         </a-menu>
     </div>
@@ -21,6 +25,8 @@
 import { AlignRightOutlined, IdcardOutlined, ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import {useAuthStore} from '../store/index'
+const ismanager=useAuthStore().ismanager;
 const selectedKeys = ref(['1']);
 const router = useRouter();
 watch(selectedKeys, (newVal) => {
@@ -31,6 +37,8 @@ watch(selectedKeys, (newVal) => {
         router.push('/student');
     } else if (newVal[0] === '3') {
         router.push('/dangerouswords');
+    }  else if (newVal[0] === '4') {
+        router.push('/volunteer');
     } 
 
 });

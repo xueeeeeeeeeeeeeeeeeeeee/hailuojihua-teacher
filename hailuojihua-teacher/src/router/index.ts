@@ -7,7 +7,7 @@ import HomeView from '../views/index.vue'
 import loginView from '../views/login.vue'
 import StudentManageView from '../views/student_manage.vue'
 import DangerousWordsWarningView from '../views/dangerousWordsWarning.vue'
-
+import volunteer from '../views/volunteer.vue'
 const router = createRouter({
     history: createWebHistory(
         import.meta.env.BASE_URL),
@@ -33,6 +33,13 @@ const router = createRouter({
                 path: '/dangerouswords',
                 name: 'dangerouswords',
                 component: DangerousWordsWarningView, 
+                meta: {
+                    requiresAuth: true
+                }
+            }, {
+                path: '/volunteer',
+                name: 'volunteer',
+                component: volunteer, 
                 meta: {
                     requiresAuth: true
                 }
