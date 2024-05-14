@@ -62,7 +62,7 @@ interface Api {
 }
 
 const api: Api = {
-  login: (data) => axiosInstance.post('/sign/psd_login', data),
+  login: (data) => axiosInstance.post('/sign/school_psd_login', data),
   readOnestudent: (hailuoId) => axiosInstance.get(`/teacher/readOne/${hailuoId}`),
   studentRegister: (data) => axiosInstance.post('/teacher/studentRegister', data),
   getschoolList: () => axiosInstance.get(`/sign/schoolList`),
