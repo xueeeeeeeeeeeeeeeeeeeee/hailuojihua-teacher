@@ -4,7 +4,7 @@ import router from '../router'; // 假设你的路由器实例被导入为 route
 // 创建 Axios 实例
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: 'http://124.220.40.115:82',
-  timeout: 5000,
+  timeout: 50000,
 });
 
 // 请求拦截器

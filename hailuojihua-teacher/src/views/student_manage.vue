@@ -351,9 +351,15 @@
     try {
       const excel = new Excel(file);
       // 导入文件获取数据
-      const res = await excel.importExcel({
+      let res = await excel.importExcel({
         header
       });
+      res = res.map(item => ({
+        ...item,
+        name: String(item.name),
+        username: String(item.username),
+        className: String(item.className)
+      }));
       console.log(res);
       console.log(hasMissingProperties(res));
 
@@ -365,15 +371,15 @@
         openMessage('isrepeat');
         return new Promise(() => {});
       }
-      const promises: any = [];
-      promises.push(
-        api.studentRegister({
+
+      await api.studentRegister({
           studentList: res
         })
         .then((res) => {
           console.log(res);
           res.data.forEach((item: {
-            status: string;username: string;
+            status: string;
+            username: string;
           }) => {
             if (item.status === "用户名已存在") {
               errorMes(item.username + '用户名已存在，请重新上传！');
@@ -390,12 +396,8 @@
           console.log(error);
           errorMes(error);
         })
-      );
 
-      Promise.all(promises)
-        .then(() => {
-          return api.getStudentList();
-        })
+      await api.getStudentList()
         .then((studentList) => {
           console.log(studentList);
           dataSource.value = studentList.data;
