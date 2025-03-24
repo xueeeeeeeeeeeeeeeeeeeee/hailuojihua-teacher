@@ -31,16 +31,33 @@ interface LoginForm {
     userid: string;
     password: string;
     schoolId: string;
-    className:string;
+    className: string;
 }
 const loginForm = ref<LoginForm>({
     userid: '',
     password: '',
     schoolId: '',
-    className:'教师'
+    className: '教师'
 });
 const handleLogin: any = () => {
+    let x=0;
+    console.log(loginForm.value);
+    api.managelogin({
+        username: loginForm.value.userid,
+        password: loginForm.value.password,
+    }).then((res) => {
+        console.log(res);
+        if (res.msg == "管理员登录成功") {
+            AuthStore.manage();
+            x=1;
+            localStorage.setItem("token", res.data.token)
+        // console.log(localStorage.getItem('token'));
 
+        router.push('/');
+        }
+
+    })
+if(x==1){    
     api.login({
         username: loginForm.value.userid,
         className: loginForm.value.className,
@@ -51,12 +68,14 @@ const handleLogin: any = () => {
         if (res.msg == "管理员登录成功") {
             AuthStore.manage();
         }
-        console.log(res.msg);
+        console.log(res);
         localStorage.setItem("token", res.data.token)
         // console.log(localStorage.getItem('token'));
 
         router.push('/');
     })
+}
+
 
 }
 

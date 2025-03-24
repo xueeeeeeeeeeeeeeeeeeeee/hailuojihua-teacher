@@ -38,6 +38,7 @@ axiosInstance.interceptors.response.use(
 
 // 定义接口
 interface Api {
+  managelogin(data: any): Promise<any>;
   login(data: any): Promise<any>;
   readOnestudent(hailuoId:number): Promise<any>;
   studentRegister(data:any): Promise<any>;
@@ -62,6 +63,7 @@ interface Api {
 }
 
 const api: Api = {
+  managelogin: (data) => axiosInstance.post('/sign/psd_login', data),
   login: (data) => axiosInstance.post('/sign/school_psd_login', data),
   readOnestudent: (hailuoId) => axiosInstance.get(`/teacher/readOne/${hailuoId}`),
   studentRegister: (data) => axiosInstance.post('/teacher/studentRegister', data),
